@@ -59,7 +59,7 @@ public class Mail {
      * @param recipient
      * @throws AddressException if recipient is a malformed email address
      */
-    public Mail(String subject, String content, InternetAddress recipient) throws AddressException {
+    public Mail(String subject, String content, InternetAddress recipient) {
         this(subject, content);
 
         addRecipient(recipient);
