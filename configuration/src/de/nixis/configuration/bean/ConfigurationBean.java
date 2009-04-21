@@ -22,14 +22,14 @@ import javax.persistence.PersistenceContext;
  *
  * @author Dummdoedel, Muffelbox
  */
-@Stateless(mappedName = "Configuration",
-name = "Configuration",
-description = "Configuration interface")
+@Stateless
 public class ConfigurationBean implements Configuration, LoggingSupporting {
 
     private static HashSet<ConfigurationChangeListener> listeners;
+
     @PersistenceContext
     private EntityManager em;
+
     private Logger logger;
 
     /**
