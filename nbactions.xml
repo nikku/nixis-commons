@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>build-with-dependencies</actionName>
+            <basedir>.</basedir>
+            <reactor>also-make</reactor>
+            <goals>
+                <goal>install</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-install with checksums</actionName>
+            <displayName>install with checksums</displayName>
+            <goals>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <createChecksum>true</createChecksum>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-generate javadoc jar</actionName>
+            <displayName>generate javadoc jar</displayName>
+            <goals>
+                <goal>javadoc:jar</goal>
+            </goals>
+            <properties>
+                <createChecksum>true</createChecksum>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-build and install javadoc</actionName>
+            <displayName>build and install javadoc</displayName>
+            <goals>
+                <goal>install:install-file</goal>
+            </goals>
+            <properties>
+                <classifier>javadoc</classifier>
+                <createChecksum>true</createChecksum>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-install (complete)</actionName>
+            <displayName>install (complete)</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>javadoc:jar</goal>
+                <goal>source:jar</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <createChecksums>true</createChecksums>
+            </properties>
+        </action>
+    </actions>

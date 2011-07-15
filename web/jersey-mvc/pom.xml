@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>commons</artifactId>
+        <groupId>de.nixis</groupId>
+        <version>1.0.2</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <groupId>de.nixis.commons.web</groupId>
+    <artifactId>jersey-mvc</artifactId>
+    <version>1.0.3</version>
+    <name>${project.groupId}.${project.artifactId}</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+    </dependencies>
+    <properties>
+        <jersey-version>1.5-ea08</jersey-version>
+    </properties>
+</project>
