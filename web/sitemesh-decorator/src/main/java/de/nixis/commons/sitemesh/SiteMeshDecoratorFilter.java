@@ -107,8 +107,8 @@ public class SiteMeshDecoratorFilter extends ConfigurableSiteMeshFilter {
      * @param builder the builder to apply the configuration to
      */
     protected void registerDecoratorSelectors(SiteMeshFilterBuilder builder) {
-               builder.setCustomDecoratorSelector(
-                    new NonAjaxRequestDecoratorSelector(
-                            builder.getDecoratorSelector()));
+        builder.setCustomDecoratorSelector(
+            new NonAjaxRequestDecoratorSelector(
+                builder.getDecoratorSelector()));
     }
 }

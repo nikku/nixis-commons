@@ -17,6 +17,8 @@ import org.sitemesh.webapp.WebAppContext;
  */
 public class NonAjaxRequestDecoratorSelector implements DecoratorSelector<WebAppContext> {
 
+    private final static String[] EMPTY_ARRAY = new String[0];
+
     private final DecoratorSelector<WebAppContext> parent;
 
     /**
@@ -44,7 +46,7 @@ public class NonAjaxRequestDecoratorSelector implements DecoratorSelector<WebApp
         if (!isAjax(c.getRequest())) {
             return parent.selectDecoratorPaths(content, c);
         } else {
-            return new String[0];
+            return EMPTY_ARRAY;
         }
     }
 
