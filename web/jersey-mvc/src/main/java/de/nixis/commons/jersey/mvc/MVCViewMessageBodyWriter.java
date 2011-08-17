@@ -53,9 +53,9 @@ import javax.ws.rs.ext.Provider;
  * @author nico.rehwaldt
  */
 @Provider
-@Produces("text/html")
+@Produces({"text/html;qs=4", "*/*"})
 public class MVCViewMessageBodyWriter implements MessageBodyWriter<Object> {
-
+    
     private static final Logger LOGGER =
         Logger.getLogger(MVCViewMessageBodyWriter.class.getName());
 
@@ -97,7 +97,13 @@ public class MVCViewMessageBodyWriter implements MessageBodyWriter<Object> {
 
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
-
+        
+        if (!(mediaType.isCompatible(MediaType.APPLICATION_XHTML_XML_TYPE) || 
+              mediaType.isCompatible(MediaType.TEXT_HTML_TYPE))) {
+            
+            return false;
+        }
+        
         Object model = context.getResponse().getEntity();
 
         // If class is not a model class

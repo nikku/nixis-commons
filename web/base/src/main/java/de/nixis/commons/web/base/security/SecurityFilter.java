@@ -32,7 +32,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 
     @Override
     public ContainerRequest filter(ContainerRequest request) {
-        UserBase user = (UserBase) hsr.getSession().getAttribute("user");
+        UserBase user = (UserBase) hsr.getSession().getAttribute("currentUser");
         if (user == null) {
             Cookie cookie = request.getCookies().get("uid");
             if (cookie != null) {
@@ -67,13 +67,7 @@ public class SecurityFilter implements ContainerRequestFilter {
 
         @Override
         public boolean isUserInRole(String role) {
-            if ("user".equals(role)) {
-                return user != null;
-            } else if ("admin".equals(role)) {
-                return user != null && user.isAdmin();
-            }
-            
-            return false;
+            return user != null && user.hasRole(role);
         }
 
         @Override

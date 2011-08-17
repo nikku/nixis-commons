@@ -97,10 +97,11 @@ public abstract class UserBase implements Serializable, Principal {
     }
 
     /**
-     * Return if user is admin
-     * @return true, if user is admin, false otherwise
+     * Return true if the user has the specified role 
+     * 
+     * @return true, if user has the specified role, false otherwise
      */
-    public abstract boolean isAdmin();
+    public abstract boolean hasRole(String role);
     
     public void setEmail(String email) {
         this.email = email;

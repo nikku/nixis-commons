@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * @author nico.rehwaldt
  */
 public class FlashMapHelper {
-
+    
     /**
      * Initializes flash map for a given request.
      * @param request
