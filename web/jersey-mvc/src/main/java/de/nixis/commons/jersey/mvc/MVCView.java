@@ -35,7 +35,7 @@ public class MVCView {
      * Returns a new MVCView which indicates that the given template should be
      * rendered with the given model.
      *
-     * This method is ment to be staticly included in controller classes.
+     * This method is meant to be statically included in controller classes.
      * 
      * @param template to be rendered
      * @param model to be used for rendering
@@ -55,7 +55,8 @@ public class MVCView {
      * started to the given uri. If the uri is relative, it will
      * be interpreted relative to the applications base directory.
      *
-     * This method is ment to be staticly included in controller classes.
+     * This method is meant to be statically included in controller classes.
+     * 
      * @param uri to redirect to
      * 
      * @return configured response
@@ -70,6 +71,7 @@ public class MVCView {
 
     /**
      * Return the template passed to this view instance
+     * 
      * @return the template
      */
     public String getTemplate() {
@@ -78,7 +80,8 @@ public class MVCView {
 
     /**
      * Return the model passed to this view instance
-     * @return
+     * 
+     * @return the model provided within the view
      */
     public Object getModel() {
         return model;

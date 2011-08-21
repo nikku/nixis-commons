@@ -82,7 +82,7 @@ public abstract class Controller {
     private void addToFlashContainer(String message, String containerName, Object ... args) {
         List<String> container = (List<String>) flash().get(containerName);
         if (container == null) {
-            container = new ArrayList();
+            container = new ArrayList<String>();
             flash().put(containerName, container);
         }
 

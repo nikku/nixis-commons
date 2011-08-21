@@ -5,12 +5,9 @@
 
 package de.nixis.commons.web.taglib.core;
 
-import com.sun.org.apache.bcel.internal.generic.INSTANCEOF;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
