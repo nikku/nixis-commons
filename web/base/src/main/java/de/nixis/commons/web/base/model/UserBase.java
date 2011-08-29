@@ -174,6 +174,13 @@ public abstract class UserBase implements Serializable, Principal {
     }
     
     /**
+     * Clears this user's password.
+     */
+    public void clearPassword() {
+        this.password = null;
+    }
+    
+    /**
      * Remove stored password reset token
      */
     public void removePasswordResetToken() {
