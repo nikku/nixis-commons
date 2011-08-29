@@ -7,7 +7,6 @@ package de.nixis.commons.web.taglib.core;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,11 +18,21 @@ public class TagUtil {
 
     public static final String ORIGINAL_REQUEST_URI = "de.nixis.commons.web.taglib.url.ORIGINAL_REQUEST_URI";
     
+    /**
+     * Rewrites the specified uri according to the original request 
+     * uri stored in request 
+     * 
+     * @param request
+     * @param response
+     * @param path
+     * 
+     * @return the rewritten uri or null if path is null
+     */
     public static String rewriteURL(
             HttpServletRequest request,
             HttpServletResponse response,
             String path) {
-
+        
         String url;
         
         if (isAbsolute(path)) {
@@ -63,7 +72,7 @@ public class TagUtil {
     }
 
     private static boolean isAbsolute(String path) {
-        return path.charAt(0) == '/';
+        return path.length() > 0 && path.charAt(0) == '/';
     }
     
     private static boolean isAjax(HttpServletRequest request) {

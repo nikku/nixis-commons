@@ -5,18 +5,15 @@ package de.nixis.commons.web.base.model;
 
 import de.nixis.commons.digester.Digester;
 import java.io.Serializable;
-import java.security.NoSuchAlgorithmException;
 import java.security.Principal;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -34,41 +31,37 @@ public abstract class UserBase implements Serializable, Principal {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotEmpty(message = "You need to assign a user name")
+    @NotEmpty
     private String name;
 
     /**
-     * A token to authenticate a user via cookies or other media
+     * A token to authenticate a user via non-cookie media
      */
     private String authToken;
 
+    /**
+     * A token to authenticate password reset
+     */
+    private String passwordResetToken;
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date registered;
 
-    @NotEmpty(message = "You need to fill in your e-mail address")
-    @Email(message = "The e-mail address you entered is not valid")
+    @NotEmpty
+    @Email
+    @Column(unique = true)
     private String email;
-
-    @Transient
-    private String unencryptedPassword;
-
-    @Transient
-    private String unencryptedPasswordVerification;
 
     private String password;
 
     public UserBase() {}
 
-    public UserBase(String name, String email, String password,
-                String passwordVerification) {
-        
+    public UserBase(String name, String email) {
         this.name = name;
         this.email = email;
-
-        setPassword(password, passwordVerification);
     }
 
     public Long getId() {
@@ -82,14 +75,6 @@ public abstract class UserBase implements Serializable, Principal {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getUnencryptedPassword() {
-        return unencryptedPassword;
-    }
-
-    public String getUnencryptedPasswordVerification() {
-        return unencryptedPasswordVerification;
     }
 
     public String getPassword() {
@@ -107,33 +92,24 @@ public abstract class UserBase implements Serializable, Principal {
         this.email = email;
     }
 
+    /**
+     * Sets the password for this user
+     * 
+     * @param password
+     * @param verification 
+     * 
+     * @throws IllegalArgumentException if password and verification do not match or
+     *                                  password is empty
+     */
     public final void setPassword(String password, String verification) {
-        unencryptedPassword = password;
-        unencryptedPasswordVerification = verification;
-    }
-
-    public boolean isPasswordValid() {
-        if (unencryptedPassword != null) {
-            return !unencryptedPassword.equals("");
+        if (password == null || 
+            password.isEmpty() || 
+            !password.equals(verification)) {
+            
+            throw new IllegalArgumentException("Password and verification do not match");
         }
-
-        return false;
-    }
-
-    public boolean verificationMatches() {
-        if (unencryptedPassword != null) {
-            return unencryptedPassword.equals(unencryptedPasswordVerification);
-        }
-
-        return false;
-    }
-
-    @PrePersist
-    @PreUpdate
-    protected void encryptPassword() throws NoSuchAlgorithmException {
-        if (unencryptedPassword != null) {
-            this.password = Digester.digest(unencryptedPassword);
-        }
+        
+        this.password = Digester.digest(password);
     }
     
     /**
@@ -144,21 +120,66 @@ public abstract class UserBase implements Serializable, Principal {
         return Digester.matches(other, password);
     }
 
-    /**
-     * Returns a new auth token and stores it on the user instance
-     * @return auth token
-     */
-    public String createAuthToken() {
+    private String createToken() {
         String s = new StringBuilder()
                 .append(id)
                 .append(password)
+                .append(Math.random())
+                .append(name)
                 .append(new Date())
                 .toString();
-
-        authToken = Digester.hash(s);
+        
+        return s;
+    }
+    
+    /**
+     * Returns a new auth token and stores it internally
+     * @return the new auth token
+     */
+    public String createAuthToken() {
+        authToken = Digester.hash(createToken());
         return authToken;
     }
 
+    /**
+     * Returns a new token to reset a users password
+     * @return the new password reset token
+     */
+    public String createPasswordResetToken() {
+        passwordResetToken = Digester.hash(createToken());
+        return passwordResetToken;
+    }
+    
+    /**
+     * Returns a previously created auth token for the current user
+     * @return 
+     */
+    public String getAuthToken() {
+        return authToken;
+    }
+    
+    /**
+     * Returns a previously created password reset token for the current user
+     * @return 
+     */
+    public String getPasswordResetToken() {
+        return passwordResetToken;
+    }
+    
+    /**
+     * Remove stored auth token
+     */
+    public void removeAuthToken() {
+        this.authToken = null;
+    }
+    
+    /**
+     * Remove stored password reset token
+     */
+    public void removePasswordResetToken() {
+        this.passwordResetToken = null;
+    }
+    
     public void setLastLogin(Date lastLogin) {
         this.lastLogin = lastLogin;
     }

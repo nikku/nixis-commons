@@ -3,16 +3,7 @@
     <tlib-version>1.0</tlib-version>
     <short-name>u</short-name>
     <uri>http://nixis.de/jsp/tags/core</uri>
-    <!-- A validator verifies that the tags are used correctly at JSP
-         translation time. Validator entries look like this: 
-    <validator>
-        <validator-class>com.mycompany.TagLibValidator</validator-class>
-        <init-param>
-            <param-name>parameter</param-name>
-            <param-value>value</param-value>
-	    </init-param>
-    </validator>
-    -->
+    <!-- @see http://download.oracle.com/javaee/5/tutorial/doc/bnahq.html#bnaio -->
     <listener>
         <listener-class>de.nixis.commons.web.taglib.core.UrlRequestListener</listener-class>
     </listener>

@@ -11,7 +11,7 @@
     <groupId>de.nixis.commons.web</groupId>
     <artifactId>base</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.8</version>
+    <version>1.0.11</version>
     <name>${project.groupId}.${project.artifactId}</name>
     <url>http://maven.apache.org</url>
     <dependencies>
