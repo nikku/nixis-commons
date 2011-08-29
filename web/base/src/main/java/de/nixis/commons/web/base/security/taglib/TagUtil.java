@@ -13,10 +13,10 @@ import de.nixis.commons.web.base.model.UserBase;
 public class TagUtil {
     
     /**
-     * Returns true, if the specified argument is a 
-     * @param o
-     * @param cls
-     * @return
+     * Returns true, if the specified user has the provided role.
+     * @param user the user
+     * @param role the role as string
+     * @return true, if user has role
      */
     public static boolean hasRole(UserBase user, String role) {
         return user != null && user.hasRole(role);
