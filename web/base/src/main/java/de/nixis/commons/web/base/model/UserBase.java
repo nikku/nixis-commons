@@ -7,11 +7,15 @@ import de.nixis.commons.digester.Digester;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.Date;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.Email;
@@ -27,22 +31,17 @@ public abstract class UserBase implements Serializable, Principal {
 
     private static final long serialVersionUID = 1L;
 
+    public enum Tokens {
+        PASSWORD_RESET, 
+        AUTH
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty
     private String name;
-
-    /**
-     * A token to authenticate a user via non-cookie media
-     */
-    private String authToken;
-
-    /**
-     * A token to authenticate password reset
-     */
-    private String passwordResetToken;
     
     @Temporal(TemporalType.TIMESTAMP)
     private Date lastLogin;
@@ -55,6 +54,10 @@ public abstract class UserBase implements Serializable, Principal {
     @Column(unique = true)
     private String email;
 
+    @JoinColumn(name="user_id")
+    @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
+    private Set<Token> tokens;
+    
     private String password;
 
     public UserBase() {}
@@ -99,7 +102,7 @@ public abstract class UserBase implements Serializable, Principal {
      * @param verification 
      * 
      * @throws IllegalArgumentException if password and verification do not match or
-     *                                  password is empty
+     *                                  password hasType empty
      */
     public final void setPassword(String password, String verification) {
         if (password == null || 
@@ -119,58 +122,44 @@ public abstract class UserBase implements Serializable, Principal {
     public boolean passwordEquals(String other) {
         return Digester.matches(other, password);
     }
-
-    private String createToken() {
-        String s = new StringBuilder()
-                .append(id)
-                .append(password)
-                .append(Math.random())
-                .append(name)
-                .append(new Date())
-                .toString();
-        
-        return s;
-    }
-    
-    /**
-     * Returns a new auth token and stores it internally
-     * @return the new auth token
-     */
-    public String createAuthToken() {
-        authToken = Digester.hash(createToken());
-        return authToken;
-    }
-
-    /**
-     * Returns a new token to reset a users password
-     * @return the new password reset token
-     */
-    public String createPasswordResetToken() {
-        passwordResetToken = Digester.hash(createToken());
-        return passwordResetToken;
-    }
-    
-    /**
-     * Returns a previously created auth token for the current user
-     * @return 
-     */
-    public String getAuthToken() {
-        return authToken;
-    }
-    
-    /**
-     * Returns a previously created password reset token for the current user
-     * @return 
-     */
-    public String getPasswordResetToken() {
-        return passwordResetToken;
-    }
     
     /**
      * Remove stored auth token
      */
-    public void removeAuthToken() {
-        this.authToken = null;
+    public <T extends Enum> Token<T> removeToken(T type) {
+        Token token = getToken(type);
+        if (token != null) {
+            tokens.remove(token);
+        }
+        return token;
+    }
+    
+    /**
+     * Returns the value of the specified token or null
+     */
+    public <T extends Enum> Token<T> getToken(T type) {
+        for (Token t: tokens) {
+            if (t.hasType(type)) {
+                return t;
+            }
+        }
+        
+        return null;
+    }
+    
+    public <T extends Enum> String createToken(T type) {
+        return createToken(type, null);
+    }
+    
+    public <T extends Enum> String createToken(T type, String additionalData) {
+        Token old = getToken(type);
+        if (old != null) {
+            tokens.remove(old);
+        }
+        
+        Token<T> token = Token.<T>create(type, additionalData);
+        tokens.add(token);
+        return token.getValue();
     }
     
     /**
@@ -178,13 +167,6 @@ public abstract class UserBase implements Serializable, Principal {
      */
     public void clearPassword() {
         this.password = null;
-    }
-    
-    /**
-     * Remove stored password reset token
-     */
-    public void removePasswordResetToken() {
-        this.passwordResetToken = null;
     }
     
     public void setLastLogin(Date lastLogin) {

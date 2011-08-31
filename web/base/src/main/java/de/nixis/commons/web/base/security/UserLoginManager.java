@@ -33,8 +33,9 @@ public class UserLoginManager {
     @Transactional
     public UserBase loginViaAuthToken(String authToken) {
         try {
-            UserBase user = (UserBase) em.createQuery("SELECT u FROM User u WHERE u.authToken = :authToken")
+            UserBase user = (UserBase) em.createQuery("SELECT u FROM User u JOIN u.tokens t WHERE t.value = :authToken AND t.type = :type")
                                  .setParameter("authToken", authToken)
+                                 .setParameter("type", "AUTH")
                                  .getSingleResult();
 
             user.setLastLogin(new Date());
