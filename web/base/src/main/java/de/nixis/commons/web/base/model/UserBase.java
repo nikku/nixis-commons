@@ -7,6 +7,7 @@ import de.nixis.commons.digester.Digester;
 import java.io.Serializable;
 import java.security.Principal;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -56,7 +57,7 @@ public abstract class UserBase implements Serializable, Principal {
 
     @JoinColumn(name="user_id")
     @OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-    private Set<Token> tokens;
+    private Set<Token> tokens = new HashSet<Token>();
     
     private String password;
 

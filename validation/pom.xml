@@ -1,0 +1,49 @@
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>de.nixis</groupId>
+        <artifactId>commons</artifactId>
+        <version>1.0.2</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <groupId>de.nixis.commons</groupId>
+    <artifactId>validation</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+    <name>${project.groupId}.${project.artifactId}</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <hibernate-validator-version>4.2.0.Final</hibernate-validator-version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${hibernate-validator-version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>cglib</artifactId>
+                    <groupId>cglib</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- better to require just the validation api here -->
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>6.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.nixis.commons</groupId>
+            <artifactId>i18n</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+</project>

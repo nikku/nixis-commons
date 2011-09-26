@@ -11,7 +11,7 @@
     <groupId>de.nixis.commons.web</groupId>
     <artifactId>base</artifactId>
     <packaging>jar</packaging>
-    <version>1.1.0</version>
+    <version>1.2.1</version>
     <name>${project.groupId}.${project.artifactId}</name>
     <url>http://maven.apache.org</url>
     <dependencies>
@@ -23,11 +23,11 @@
         <dependency>
             <groupId>de.nixis.commons.web</groupId>
             <artifactId>jersey-mvc</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.6</version>
         </dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
-            <artifactId>jersey-server</artifactId>
+            <artifactId>jersey-core</artifactId>
             <version>${jersey-version}</version>
             <scope>provided</scope>
         </dependency>
@@ -49,10 +49,17 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- javax dependencies -->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
             <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
             <scope>provided</scope>
         </dependency>
         <!-- spring dependencies -->
@@ -72,7 +79,6 @@
     <properties>
         <jersey-version>1.5</jersey-version>
         <hibernate-validator-version>4.1.0.Beta1</hibernate-validator-version>
-        <ejb-version>3.0</ejb-version>
         <spring-version>3.0.5.RELEASE</spring-version>
     </properties>
 </project>

@@ -6,12 +6,12 @@ package de.nixis.commons.web.base.security;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerRequestFilter;
 import de.nixis.commons.web.base.model.UserBase;
-import de.nixis.commons.web.base.flash.FlashMapHelper;
 import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,60 +24,37 @@ public class SecurityFilter implements ContainerRequestFilter {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityFilter.class.getName());
 
-    @Autowired
+    @Inject
     private UserLoginManager userLoginManager;
     
-    @javax.ws.rs.core.Context
-    private HttpServletRequest hsr;
+    @Context
+    private ThreadLocal<HttpServletRequest> tlr;
 
     @Override
     public ContainerRequest filter(ContainerRequest request) {
-        UserBase user = (UserBase) hsr.getSession().getAttribute("currentUser");
+        HttpServletRequest r = tlr.get();
+        if (r == null) {
+            LOGGER.severe("Tried to execute filter outside context of a request");
+            
+            throw new IllegalStateException(
+                "Can only be used in the context of a request");
+        }
+        
+        UserBase user = (UserBase) r.getSession().getAttribute("currentUser");
         if (user == null) {
             Cookie cookie = request.getCookies().get("uid");
             if (cookie != null) {
                 user = userLoginManager.loginViaAuthToken(cookie.getValue());
 
                 if (user != null) {
-                    hsr.getSession().setAttribute("currentUser", user);
+                    r.getSession().setAttribute("currentUser", user);
+                    LOGGER.fine("Logged in current user via session");
                 }
             }
         }
         
-        // Initialize flash map
-        FlashMapHelper.initFlashMap(hsr);
-
         // Set request's security context
-        request.setSecurityContext(new Context(user));
+        request.setSecurityContext(new SimpleSecurityContext(user));
         return request;
-    }
-    
-    private class Context implements SecurityContext {
-
-        private UserBase user;
-        
-        public Context(UserBase user) {
-            this.user = user;
-        }
-
-        @Override
-        public UserBase getUserPrincipal() {
-            return user;
-        }
-
-        @Override
-        public boolean isUserInRole(String role) {
-            return user != null && user.hasRole(role);
-        }
-
-        @Override
-        public boolean isSecure() {
-            return false;
-        }
-
-        @Override
-        public String getAuthenticationScheme() {
-            return FORM_AUTH;
-        }
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Part of nixis.commons
  */
-package de.nixis.commons.web.base.flash;
+package de.nixis.commons.web.flash;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,18 +15,6 @@ import java.util.Set;
 public class FlashMap implements Map<String, Object> {
     
     private final HashMap<String, Object> map = new HashMap<String, Object>();
-
-    /**
-     * Get values
-     * @return
-     */
-    public Map<String, Object> getRequestAttributes() {
-        Map<String, Object> result = new HashMap<String, Object>(map);
-        synchronized (map) {
-            map.clear();
-        }
-        return result;
-    }
     
     @Override
     public int size() {
