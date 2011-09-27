@@ -17,7 +17,6 @@
         <module>web/sitemesh-decorator</module>
         <module>validation</module>
         <module>i18n</module>
-        <module>web/navigation</module>
     </modules>
     <dependencies>
         <dependency>
