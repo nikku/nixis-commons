@@ -32,44 +32,6 @@ public class MVCView {
     }
 
     /**
-     * Returns a new MVCView which indicates that the given template should be
-     * rendered with the given model.
-     *
-     * This method is meant to be statically included in controller classes.
-     * 
-     * @param template to be rendered
-     * @param model to be used for rendering
-     *
-     * @return mvc view holding the information
-     */
-    public static MVCView template(String template, Object model) {
-        if (template == null) {
-            throw new IllegalArgumentException("Template can not be null");
-        }
-        
-        return new MVCView(template, model);
-    }
-
-    /**
-     * Returns a response indicating that a redirect should be
-     * started to the given uri. If the uri is relative, it will
-     * be interpreted relative to the applications base directory.
-     *
-     * This method is meant to be statically included in controller classes.
-     * 
-     * @param uri to redirect to
-     * 
-     * @return configured response
-     */
-    public static Response redirect(String uri) {
-        try {
-            return Response.status(Response.Status.TEMPORARY_REDIRECT).location(new URI(uri)).build();
-        } catch (URISyntaxException e) {
-            throw new ContainerException(e);
-        }
-    }
-
-    /**
      * Return the template passed to this view instance
      * 
      * @return the template
@@ -101,5 +63,43 @@ public class MVCView {
         }
         builder.append(template).append(".jsp");
         return builder.toString();
+    }
+    
+    /**
+     * Returns a new MVCView which indicates that the given template should be
+     * rendered with the given model.
+     *
+     * This method is meant to be statically included in controller classes.
+     * 
+     * @param template to be rendered
+     * @param model to be used for rendering
+     *
+     * @return mvc view holding the information
+     */
+    public static MVCView template(String template, Object model) {
+        if (template == null) {
+            throw new IllegalArgumentException("Template cannot be null");
+        }
+        
+        return new MVCView(template, model);
+    }
+
+    /**
+     * Returns a response indicating that a redirect should be
+     * started to the given uri. If the uri is relative, it will
+     * be interpreted relative to the applications base directory.
+     *
+     * This method is meant to be statically included in controller classes.
+     * 
+     * @param uri to redirect to
+     * 
+     * @return configured response
+     */
+    public static Response redirect(String uri) {
+        try {
+            return Response.seeOther(new URI(uri)).build();
+        } catch (URISyntaxException e) {
+            throw new ContainerException(e);
+        }
     }
 }

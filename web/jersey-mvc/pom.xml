@@ -5,12 +5,12 @@
     <parent>
         <artifactId>commons</artifactId>
         <groupId>de.nixis</groupId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <groupId>de.nixis.commons.web</groupId>
     <artifactId>jersey-mvc</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <name>${project.groupId}.${project.artifactId}</name>
     <url>http://maven.apache.org</url>
     <dependencies>

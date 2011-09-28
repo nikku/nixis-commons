@@ -4,7 +4,7 @@
     <groupId>de.nixis</groupId>
     <artifactId>commons</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <name>${project.groupId}.${project.artifactId}</name>
     <url>http://maven.apache.org</url>
     <modules>
@@ -17,7 +17,6 @@
         <module>web/sitemesh-decorator</module>
         <module>validation</module>
         <module>i18n</module>
-        <module>web/navigation</module>
     </modules>
     <dependencies>
         <dependency>
