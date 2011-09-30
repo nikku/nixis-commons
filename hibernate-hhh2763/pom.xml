@@ -5,7 +5,8 @@
     <parent>
         <artifactId>commons</artifactId>
         <groupId>de.nixis</groupId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>de.nixis.commons</groupId>
     <artifactId>hibernate-hhh2763</artifactId>
