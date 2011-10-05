@@ -4,6 +4,7 @@
  */
 package de.nixis.commons.web.flash;
 
+import de.nixis.commons.web.flash.util.Helper;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -58,7 +59,7 @@ public class FlashFilter implements Filter {
             return;
         }
         
-        FlashHelper.initFlash(request);
+        Helper.initFlash(request);
         setOnlyOnceFlag(request);
     }
     

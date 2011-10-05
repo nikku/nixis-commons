@@ -1,8 +1,9 @@
 /*
  * Part of nixis.commons
  */
-package de.nixis.commons.web.flash;
+package de.nixis.commons.web.flash.util;
 
+import de.nixis.commons.web.flash.FlashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * Some helper methods to extract a flash map from the request scope
  * @author nico.rehwaldt
  */
-public class FlashHelper {
+public class Helper {
     
     public static final String FLASH_SESSION_STORAGE = "__flashMap";
     

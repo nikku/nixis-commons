@@ -9,7 +9,7 @@ import com.sun.jersey.core.spi.component.ComponentScope;
 import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import de.nixis.commons.web.flash.FlashMap;
-import de.nixis.commons.web.flash.FlashHelper;
+import de.nixis.commons.web.flash.util.Helper;
 import java.lang.reflect.Type;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
@@ -46,6 +46,6 @@ public class FlashMapProvider implements InjectableProvider<Context, Type>,
             throw new IllegalStateException("Outside a request scope");
         }
         
-        return FlashHelper.getFlash(request);
+        return Helper.getFlash(request);
     }
 }
