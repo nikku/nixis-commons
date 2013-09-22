@@ -8,38 +8,39 @@ import javax.ws.rs.core.SecurityContext;
 
 /**
  * Simple security context implementation
+ *
  * @author nico.rehwaldt
  */
 public class SimpleSecurityContext implements SecurityContext {
-    
-    private UserBase user;
-    
-    public SimpleSecurityContext() {
-        this(null);
-    }
 
-    public SimpleSecurityContext(UserBase user) {
-        this.user = user;
-    }
+  private UserBase user;
 
-    @Override
-    public UserBase getUserPrincipal() {
-        return user;
-    }
+  public SimpleSecurityContext() {
+    this(null);
+  }
 
-    @Override
-    public boolean isUserInRole(String role) {
-        UserBase principal = getUserPrincipal();
-        return principal != null && principal.hasRole(role);
-    }
+  public SimpleSecurityContext(UserBase user) {
+    this.user = user;
+  }
 
-    @Override
-    public boolean isSecure() {
-        return false;
-    }
+  @Override
+  public UserBase getUserPrincipal() {
+    return user;
+  }
 
-    @Override
-    public String getAuthenticationScheme() {
-        return FORM_AUTH;
-    }
+  @Override
+  public boolean isUserInRole(String role) {
+    UserBase principal = getUserPrincipal();
+    return principal != null && principal.hasRole(role);
+  }
+
+  @Override
+  public boolean isSecure() {
+    return false;
+  }
+
+  @Override
+  public String getAuthenticationScheme() {
+    return FORM_AUTH;
+  }
 }

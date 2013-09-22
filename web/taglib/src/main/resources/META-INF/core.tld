@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
-    <tlib-version>1.0</tlib-version>
-    <short-name>u</short-name>
-    <uri>http://nixis.de/jsp/tags/core</uri>
-    <!-- @see http://download.oracle.com/javaee/5/tutorial/doc/bnahq.html#bnaio -->
-    <listener>
-        <listener-class>de.nixis.commons.web.taglib.core.UrlRequestListener</listener-class>
-    </listener>
-    <tag-file>
-        <name>url</name>
-        <path>/META-INF/tags/url.tag</path>
-    </tag-file>
-    <function>
-        <name>instanceOf</name>
-        <function-class>de.nixis.commons.web.taglib.core.TagUtil</function-class>
-        <function-signature>boolean instanceOf(java.lang.Object, java.lang.String)</function-signature>
-    </function>
+  <tlib-version>1.0</tlib-version>
+  <short-name>u</short-name>
+  <uri>http://nixis.de/jsp/tags/core</uri>
+  <!-- @see http://download.oracle.com/javaee/5/tutorial/doc/bnahq.html#bnaio -->
+  <listener>
+    <listener-class>de.nixis.commons.web.taglib.core.UrlRequestListener</listener-class>
+  </listener>
+  <tag-file>
+    <name>url</name>
+    <path>/META-INF/tags/url.tag</path>
+  </tag-file>
+  <function>
+    <name>instanceOf</name>
+    <function-class>de.nixis.commons.web.taglib.core.TagUtil</function-class>
+    <function-signature>boolean instanceOf(java.lang.Object, java.lang.String)</function-signature>
+  </function>
 </taglib>

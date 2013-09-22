@@ -1,76 +1,76 @@
-/**
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package de.nixis.commons.web.flash;
 
-import de.nixis.commons.web.flash.util.Helper;
 import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.ws.rs.container.ContainerRequestContext;
+
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
+
+import javax.ws.rs.core.Context;
 
 /**
  * Filter which initializes the flash context in an application
+ *
  * @author nico.rehwaldt
  */
-public class FlashFilter implements Filter {
-    
-    private static final String ONLY_ONCE_PREFIX = "__FilterExecuted_";
+public class FlashFilter implements ContainerRequestFilter, ContainerResponseFilter {
 
-    @Override
-    public void init(FilterConfig config) throws ServletException {}
+  private static final String FLASH_SESSION_ATTR = FlashFilter.class.getName() + "__FLASH";
 
-    @Override
-    public void doFilter(
-            ServletRequest request, 
-            ServletResponse response, 
-            FilterChain chain) throws IOException, ServletException {
-        
-        if (request instanceof HttpServletRequest && 
-            response instanceof HttpServletResponse) {
-            
-            doFilterInternal(
-                    (HttpServletRequest) request, 
-                    (HttpServletResponse) response);
-            
-            chain.doFilter(request, response);
-        } else {
-            throw new ServletException("Not in a http container");
-        }
+  @Context
+  private HttpServletRequest httpRequest;
+
+  @Override
+  public void filter(ContainerRequestContext context) throws IOException {
+    loadFlashFromSession(httpRequest);
+
+    FlashHolder.set(new HashMap<String, Object>());
+  }
+
+  @Override
+  public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+    Map<String, Object> flash = FlashHolder.get();
+
+    setSessionFlash(flash, httpRequest);
+
+    FlashHolder.set(null);
+  }
+
+  protected Map<String, Object> getAndRemoveSessionFlash(HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
+    if (session == null) {
+      return null;
     }
 
-    /**
-     * Initialize the flash *once* per request.
-     * 
-     * @param request
-     * @param response 
-     */
-    private void doFilterInternal(
-            HttpServletRequest request, 
-            HttpServletResponse response) {
-        
-        if (getOnlyOnceFlag(request) != null) {
-            return;
-        }
-        
-        Helper.initFlash(request);
-        setOnlyOnceFlag(request);
+    Map<String, Object> flash = (Map<String, Object>) session.getAttribute(FLASH_SESSION_ATTR);
+    session.removeAttribute(FLASH_SESSION_ATTR);
+
+    return flash;
+  }
+
+  protected void setRequestAttributes(Map<String, Object> flash, HttpServletRequest request) {
+    for (Map.Entry<String, Object> entry : flash.entrySet()) {
+      request.setAttribute(entry.getKey(), entry.getValue());
     }
-    
-    @Override
-    public void destroy() {}
-    
-    private Object getOnlyOnceFlag(HttpServletRequest request) {
-        return request.getAttribute(ONLY_ONCE_PREFIX + getClass().getName());
+  }
+
+  protected void loadFlashFromSession(HttpServletRequest request) {
+    Map<String, Object> flash = getAndRemoveSessionFlash(request);
+
+    if (flash != null) {
+      setRequestAttributes(flash, request);
     }
-    
-    private void setOnlyOnceFlag(HttpServletRequest request) {
-        request.setAttribute(ONLY_ONCE_PREFIX + getClass().getName(), "TRUE");
+  }
+
+  protected void setSessionFlash(Map<String, Object> flash, HttpServletRequest request) {
+    if (!flash.isEmpty()) {
+      request.getSession().setAttribute(FLASH_SESSION_ATTR, flash);
     }
+  }
 }
