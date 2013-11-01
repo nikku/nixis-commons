@@ -4,15 +4,14 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.nixis</groupId>
-    <artifactId>commons</artifactId>
-    <version>1.0.3</version>
+    <artifactId>common</artifactId>
+    <version>2.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
 
-  <groupId>de.nixis.commons.web</groupId>
+  <groupId>de.nixis.common.web</groupId>
   <artifactId>base</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0</version>
   <name>${project.groupId}.${project.artifactId}</name>
   <url>http://maven.apache.org</url>
 
@@ -37,14 +36,15 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>de.nixis.commons</groupId>
+      <groupId>de.nixis.common</groupId>
       <artifactId>digester</artifactId>
-      <version>1.0.3</version>
+      <version>2.0.0</version>
     </dependency>
     <dependency>
       <groupId>org.glassfish.jersey.ext</groupId>
       <artifactId>jersey-mvc-jsp</artifactId>
       <version>${jersey-version}</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- javax dependencies -->
@@ -55,9 +55,15 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>javax.annotation</groupId>
+      <artifactId>javax.annotation-api</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>javax.inject</groupId>
-      <artifactId>javax.inject</artifactId>
-      <version>1</version>
+      <artifactId>com.springsource.javax.inject</artifactId>
+      <version>1.0.0</version>
       <scope>provided</scope>
     </dependency>
     <!-- spring dependencies -->

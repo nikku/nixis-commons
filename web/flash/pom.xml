@@ -4,22 +4,21 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>de.nixis</groupId>
-    <artifactId>commons</artifactId>
-    <version>1.0.3</version>
+    <artifactId>common</artifactId>
+    <version>2.0.0</version>
     <relativePath>../../pom.xml</relativePath>
   </parent>
-  <groupId>de.nixis.commons.web</groupId>
+  <groupId>de.nixis.common.web</groupId>
   <artifactId>flash</artifactId>
   <packaging>jar</packaging>
-  <version>2.0.0</version>
   <name>${project.groupId}.${project.artifactId}</name>
   <url>http://maven.apache.org</url>
   <dependencies>
     <!-- javax dependencies -->
     <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>servlet-api</artifactId>
-      <version>2.5</version>
+      <groupId>javax</groupId>
+      <artifactId>javaee-web-api</artifactId>
+      <version>7.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -27,6 +26,36 @@
       <artifactId>javax.ws.rs-api</artifactId>
       <version>2.0</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-server</artifactId>
+      <version>2.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.test-framework</groupId>
+      <artifactId>jersey-test-framework-core</artifactId>
+      <scope>test</scope>
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.test-framework.providers</groupId>
+      <artifactId>jersey-test-framework-provider-grizzly2</artifactId>
+      <scope>test</scope>
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+      <version>4.11</version>
+    </dependency>
+    <dependency>
+      <groupId>org.easytesting</groupId>
+      <artifactId>fest-assert</artifactId>
+      <scope>test</scope>
+      <version>1.4</version>
     </dependency>
   </dependencies>
 </project>
